@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Communication | Johntron.com]]></title>
+  <link href="http://johntron.github.com/blog/categories/communication/atom.xml" rel="self"/>
+  <link href="http://johntron.github.com/"/>
+  <updated>2013-01-31T08:10:55-06:00</updated>
+  <id>http://johntron.github.com/</id>
+  <author>
+    <name><![CDATA[John Syrinek]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[The Cathedral, Bazaar, Mythical Man, and Bees]]></title>
+    <link href="http://johntron.github.com/communication/the-cathedral-bazaar-mythical-man-and-bees/"/>
+    <updated>2010-10-28T00:00:00-05:00</updated>
+    <id>http://johntron.github.com/communication/the-cathedral-bazaar-mythical-man-and-bees</id>
+    <content type="html"><![CDATA[<!--:en-->
+
+
+<p><a href="http://johntron.com/wp-content/uploads/2010/10/The-Cathedral-Bazaar-Mythical-Man-and-Bees.png"><img class="size-full wp-image-620 alignright" title="The Cathedral, Bazaar, Mythical-Man, and Bees" src="http://johntron.com/wp-content/uploads/2010/10/The-Cathedral-Bazaar-Mythical-Man-and-Bees.png" alt="The Cathedral, Bazaar, Mythical-Man, and Bees" width="200" height="150" /></a>In a previous post, I talked about the elusive <a title="Johntron is an expert web developer" href="http://johntron.com/advice/the-elusive-expert-web-developer/" target="_self">expert web developer</a> and his role in a software development team. In this post I want to focus more on the larger problem of collaboration. Fred Brooks laid the foundation for this topic in <a style="font-style: italic;" title="Mythical Man Month" href="http://www.amazon.com/Mythical-Man-Month-Software-Engineering-Anniversary/dp/0201835959" target="_blank">Mythical Man Month: Essays on Software Engineering</a>, and Eric S. Raymond (ESR) provided one of the most controversial criticisms 22 years later in his “<a title="The Cathedral and the Bazaar" href="http://www.catb.org/~esr/writings/cathedral-bazaar/cathedral-bazaar/" target="_blank">The Cathedral and the Bazaar</a>“. Since then, there has been much debate over this topic. Let’s start by understanding the problem, and then try to figure out what makes up a successful large-scale project.</p>
+
+<p>If you don’t feel like reading the whole thing, here’s the synopsis:</p>
+
+<ul>
+<li>Production in a team is not directly related to the number of people in the team, this is a fallacy known as the Mythical Man-Month</li>
+<li>This is because no one can understand every aspect of a large scale project, and communication is exponential in nature</li>
+<li>Fred Brooks thinks successful projects operate like a surgical team, with one person at the center surrounded by a large staff (The Cathedral)</li>
+<li>Eric Raymond points out the existence of the Linux project – an open-source, highly-distributed, large-scale operation (The Bazaar)</li>
+<li>He says this can exist because of the sheer number of people testing, finding bugs, and submitting fixes</li>
+<li>Linux still has a surgeon: Linus Torvalds. All changes must go through him.</li>
+<li>The project survives because of all the work offloaded from Linus combined with the immediate and deep feedback from the group.</li>
+<li>I think a better analogy is bees. A queen bee is the life force of a hive, and the hive supports her. The relationship is singular, plural, and mutual.</li>
+<li>I offer a way out for large scale projects that have lost their leader.</li>
+</ul>
+
+
+<p>Read on if you’re still interested.</p>
+
+<h2>The Problem: Brooks Law</h2>
+
+<p>Group dynamics are responsible for the success or failure of any large scale software project. If a project cannot organize in a sustainable way, its failure is simply a matter of time. Long ago, people thought software development was like manufacturing. Many believe productivity is based on how many workers you have. Using this logic, larger projects require more people, and the best way to expedite a project is to simply add more workers, right? Wrong. According to Brooks, “adding manpower to a late software project makes it later”. This is known as Brooks Law. (I like the alternative form: “Nine women can’t make a baby in one month”). While Brooks himself admits this is a simplification, it helps us to understand the issue. Project management is a problem of communication.</p>
+
+<p>Adding new members to a team requires more communication, and communication takes time. Communication is also exponential. Adding one new member to a team of three people means that three people each communicating with two others (six connections) becomes four people communicating with three others (12 connections). A team of 100 members means 9,900 connections. Can you imagine trying to get work done when you have 99 people all trying to tell you something, and each one of those has the same problem? OK, granted this is an oversimplification, but it is based around historical logic.</p>
+
+<p>The other issue with large scale projects is they are broad in scope by definition. This means it is difficult for any one person to understand how every detail of the entire project functions, so team members tend to curate specific portions of the project. Adding one member to a one-man team means he has to get a knowledge dump from him (this is notoriously time consuming and rarely effective), but adding another member to the team means this new member has to get his knowledge from two sources. Again, communication shows it’s exponential nature.</p>
+
+<h2>The Surgical Team and the Gorilla</h2>
+
+<p>Now that we understand the problem, let’s look at Brooks solution – the surgical team. Brooks believes large scale projects work best when organized like a surgical team. You have one very highly skilled person (or at least a very small group of people) at the center, with a staff of assistants there to do his bidding. The surgeon is responsible for getting things done, but his work load is offloaded by his team of supporters. He is the one getting things done, while everyone else gets him the tools he needs, provides input, makes sure he doesn’t screw up, and cleans up after him. In software development, this means the expert developer is the only one modifying the code, while his team gives him patches, points out bugs or problems with his logic, runs tests, and writes documentation.</p>
+
+<p>I really like Brooks idea, mainly for egotistical reasons, but there’s an 800-pound gorilla in the room. If Brooks ideas are correct, how can Linux, or any large-scale open source project exist? This is where Eric Raymond helps out. He believes that these projects are successful because of their openness and the simple fact that there are so many people watching. Raymond would call Brooks idea of the surgical team analogous to the monolithic nature of cathedrals – one point controlling a broad empire. Linux on the other hand is believed to operate like something more similar to a bazaar – many forces working independently. When people work independently on one project, problems are discovered more quickly. Linus’s Law: “given enough eyeballs, all bugs are shallow”. This means bugfixes and new features are created by smaller groups of individuals and then assimilated into the shared codebase. Raymond’s argument played a key role in AOL releasing the code for their browser, Netscape, to the public as well as the open-sourcing of other key components of today’s Linux operating system.</p>
+
+<h2>Linux’s Has a Surgeon, But He’s Kind of Lazy</h2>
+
+<p>With two differing opinions, who is right? I think they both are. While we would like to believe the power of collective intelligence as depicted by Raymond, in reality, large scale open source projects aren’t so distributed. While they are indeed a collaborative effort among tens, hundreds, or even thousands of people, there are still gatekeepers. Linus Torvalds, father of the Linux operating system is perhaps the biggest example of this. Linus is the only person that can make changes to the “official” set of code. Everything goes through him; however, this doesn’t mean he’s living in some dark corner writing code all day every day. In fact, he writes very little code. Instead, he reviews patches that have been handed to him after getting through the screening process of many different developers.</p>
+
+<p>A patch created by some anonymous contributor can get picked up, evaluated, passed on towards Linus, possibly revised, and eventually either ending up at Linus or abandoned. Then, Linus evaluates the patch using his high-level understanding of the entire project, applies it, and distributes his changes to everyone. Everyone then incorporates these changes and tests them. Because so many people are viewing the project, even the deepest bugs are discovered almost immediately. Bugfixes are then submitted through the same process. The community that supports the project also offers the other key role of creating a feedback loop. This kind of group dynamics and organization is seen in many other projects. Most of them have more than one core developer; however, there is typically a very small group of people working in concert with a broad community of contributors and testers. This is similar to Brook’s argument, but the feedback is important. If we modified his idea of the surgical team, it would be as though the staff supporting the surgeon each have their own patient receiving the same treatment, but if any one of them notices a problem, they can notify the surgeon and appropriate actions will be taken.</p>
+
+<h2>Meritocracy and The Cuddle Death</h2>
+
+<p>If you’ve made it this far, you must be really interested in this topic. I’d like to offer a new analogy: bees. A hive of bees operate in the same way as the Linux project. A single queen bee plays the key role of maintaing the rest of the group, while the rest of the group provides everything she needs to keep having little baby bees. These baby bees evolve into grown-ass bees and in turn contribute to the hive. OK, so it’s not a perfect analogy, but neither is the bazaar, the cathedral, or the surgical team. With this analogy, we can also see how a project might survive if the “queen” dies or in some way quits fulfilling the wishes of the hive. When a queen dies, the worker bees have typically already begun incubating new queen bees to replace her. Workers feed these soon-to-be queens a strict diet of royal jelly. This substance allows normal bees to develop into queens (ie: magic). The first new queen to hatch then goes and kills the other queens, and sometimes the old queen bee before taking her throne. If the old queen is still alive, and the new queen doesn’t kill her, the hive kills the old queen in something with a cute name called “cuddle death” (the workers press against her from all sides until she overheats and dies).</p>
+
+<p>The same thing can happen in open source projects. If the community doesn’t like what the core developers are doing, they can either start their own projects and operate separately from the original (something known as swarming in bee-ology), or they can replace the core team with one that meets their needs. Thanks for reading. If you made it this far, you should <a title="Contact Johntron" href="http://johntron.github.com/contact/" target="_self">contact me</a> so we can talk about things.<!--:--></p>
+
+<!--:es-->
+
+
+<p><a href="http://johntron.com/wp-content/uploads/2010/10/The-Cathedral-Bazaar-Mythical-Man-and-Bees.png"><img class="size-full wp-image-620 alignright" title="The Cathedral, Bazaar, Mythical-Man, and Bees" src="http://johntron.com/wp-content/uploads/2010/10/The-Cathedral-Bazaar-Mythical-Man-and-Bees.png" alt="The Cathedral, Bazaar, Mythical-Man, and Bees" width="200" height="150" /></a>In a previous post, I talked about the elusive <a title="Johntron is an expert web developer" href="http://johntron.com/advice/the-elusive-expert-web-developer/" target="_self">expert web developer</a> and his role in a software development team. In this post I want to focus more on the larger problem of collaboration. Fred Brooks laid the foundation for this topic in <a style="font-style: italic;" title="Mythical Man Month" href="http://www.amazon.com/Mythical-Man-Month-Software-Engineering-Anniversary/dp/0201835959" target="_blank">Mythical Man Month: Essays on Software Engineering</a>, and Eric S. Raymond (ESR) provided one of the most controversial criticisms 22 years later in his “<a title="The Cathedral and the Bazaar" href="http://www.catb.org/~esr/writings/cathedral-bazaar/cathedral-bazaar/" target="_blank">The Cathedral and the Bazaar</a>“. Since then, there has been much debate over this topic. Let’s start by understanding the problem, and then try to figure out what makes up a successful large-scale project.</p>
+
+<p>If you don’t feel like reading the whole thing, here’s the synopsis:</p>
+
+<ul>
+<li>Production in a team is not directly related to the number of people in the team, this is a fallacy known as the Mythical Man-Month</li>
+<li>This is because no one can understand every aspect of a large scale project, and communication is exponential in nature</li>
+<li>Fred Brooks thinks successful projects operate like a surgical team, with one person at the center surrounded by a large staff (The Cathedral)</li>
+<li>Eric Raymond points out the existence of the Linux project – an open-source, highly-distributed, large-scale operation (The Bazaar)</li>
+<li>He says this can exist because of the sheer number of people testing, finding bugs, and submitting fixes</li>
+<li>Linux still has a surgeon: Linus Torvalds. All changes must go through him.</li>
+<li>The project survives because of all the work offloaded from Linus combined with the immediate and deep feedback from the group.</li>
+<li>I think a better analogy is bees. A queen bee is the life force of a hive, and the hive supports her. The relationship is singular, plural, and mutual.</li>
+<li>I offer a way out for large scale projects that have lost their leader.</li>
+</ul>
+
+
+<p>Read on if you’re still interested.</p>
+
+<h2>The Problem: Brooks Law</h2>
+
+<p>Group dynamics are responsible for the success or failure of any large scale software project. If a project cannot organize in a sustainable way, its failure is simply a matter of time. Long ago, people thought software development was like manufacturing. Many believe productivity is based on how many workers you have. Using this logic, larger projects require more people, and the best way to expedite a project is to simply add more workers, right? Wrong. According to Brooks, “adding manpower to a late software project makes it later”. This is known as Brooks Law. (I like the alternative form: “Nine women can’t make a baby in one month”). While Brooks himself admits this is a simplification, it helps us to understand the issue. Project management is a problem of communication.</p>
+
+<p>Adding new members to a team requires more communication, and communication takes time. Communication is also exponential. Adding one new member to a team of three people means that three people each communicating with two others (six connections) becomes four people communicating with three others (12 connections). A team of 100 members means 9,900 connections. Can you imagine trying to get work done when you have 99 people all trying to tell you something, and each one of those has the same problem? OK, granted this is an oversimplification, but it is based around historical logic.</p>
+
+<p>The other issue with large scale projects is they are broad in scope by definition. This means it is difficult for any one person to understand how every detail of the entire project functions, so team members tend to curate specific portions of the project. Adding one member to a one-man team means he has to get a knowledge dump from him (this is notoriously time consuming and rarely effective), but adding another member to the team means this new member has to get his knowledge from two sources. Again, communication shows it’s exponential nature.</p>
+
+<h2>The Surgical Team and the Gorilla</h2>
+
+<p>Now that we understand the problem, let’s look at Brooks solution – the surgical team. Brooks believes large scale projects work best when organized like a surgical team. You have one very highly skilled person (or at least a very small group of people) at the center, with a staff of assistants there to do his bidding. The surgeon is responsible for getting things done, but his work load is offloaded by his team of supporters. He is the one getting things done, while everyone else gets him the tools he needs, provides input, makes sure he doesn’t screw up, and cleans up after him. In software development, this means the expert developer is the only one modifying the code, while his team gives him patches, points out bugs or problems with his logic, runs tests, and writes documentation.</p>
+
+<p>I really like Brooks idea, mainly for egotistical reasons, but there’s an 800-pound gorilla in the room. If Brooks ideas are correct, how can Linux, or any large-scale open source project exist? This is where Eric Raymond helps out. He believes that these projects are successful because of their openness and the simple fact that there are so many people watching. Raymond would call Brooks idea of the surgical team analogous to the monolithic nature of cathedrals – one point controlling a broad empire. Linux on the other hand is believed to operate like something more similar to a bazaar – many forces working independently. When people work independently on one project, problems are discovered more quickly. Linus’s Law: “given enough eyeballs, all bugs are shallow”. This means bugfixes and new features are created by smaller groups of individuals and then assimilated into the shared codebase. Raymond’s argument played a key role in AOL releasing the code for their browser, Netscape, to the public as well as the open-sourcing of other key components of today’s Linux operating system.</p>
+
+<h2>Linux’s Has a Surgeon, But He’s Kind of Lazy</h2>
+
+<p>With two differing opinions, who is right? I think they both are. While we would like to believe the power of collective intelligence as depicted by Raymond, in reality, large scale open source projects aren’t so distributed. While they are indeed a collaborative effort among tens, hundreds, or even thousands of people, there are still gatekeepers. Linus Torvalds, father of the Linux operating system is perhaps the biggest example of this. Linus is the only person that can make changes to the “official” set of code. Everything goes through him; however, this doesn’t mean he’s living in some dark corner writing code all day every day. In fact, he writes very little code. Instead, he reviews patches that have been handed to him after getting through the screening process of many different developers.</p>
+
+<p>A patch created by some anonymous contributor can get picked up, evaluated, passed on towards Linus, possibly revised, and eventually either ending up at Linus or abandoned. Then, Linus evaluates the patch using his high-level understanding of the entire project, applies it, and distributes his changes to everyone. Everyone then incorporates these changes and tests them. Because so many people are viewing the project, even the deepest bugs are discovered almost immediately. Bugfixes are then submitted through the same process. The community that supports the project also offers the other key role of creating a feedback loop. This kind of group dynamics and organization is seen in many other projects. Most of them have more than one core developer; however, there is typically a very small group of people working in concert with a broad community of contributors and testers. This is similar to Brook’s argument, but the feedback is important. If we modified his idea of the surgical team, it would be as though the staff supporting the surgeon each have their own patient receiving the same treatment, but if any one of them notices a problem, they can notify the surgeon and appropriate actions will be taken.</p>
+
+<h2>Meritocracy and The Cuddle Death</h2>
+
+<p>If you’ve made it this far, you must be really interested in this topic. I’d like to offer a new analogy: bees. A hive of bees operate in the same way as the Linux project. A single queen bee plays the key role of maintaing the rest of the group, while the rest of the group provides everything she needs to keep having little baby bees. These baby bees evolve into grown-ass bees and in turn contribute to the hive. OK, so it’s not a perfect analogy, but neither is the bazaar, the cathedral, or the surgical team. With this analogy, we can also see how a project might survive if the “queen” dies or in some way quits fulfilling the wishes of the hive. When a queen dies, the worker bees have typically already begun incubating new queen bees to replace her. Workers feed these soon-to-be queens a strict diet of royal jelly. This substance allows normal bees to develop into queens (ie: magic). The first new queen to hatch then goes and kills the other queens, and sometimes the old queen bee before taking her throne. If the old queen is still alive, and the new queen doesn’t kill her, the hive kills the old queen in something with a cute name called “cuddle death” (the workers press against her from all sides until she overheats and dies).</p>
+
+<p>The same thing can happen in open source projects. If the community doesn’t like what the core developers are doing, they can either start their own projects and operate separately from the original (something known as swarming in bee-ology), or they can replace the core team with one that meets their needs. Thanks for reading. If you made it this far, you should <a title="Contact Johntron" href="http://johntron.github.com/contact/" target="_self">contact me</a> so we can talk about things.<!--:--></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Measurability and Metrics are King]]></title>
+    <link href="http://johntron.github.com/communication/measurability-and-metrics-are-king/"/>
+    <updated>2010-06-01T00:00:00-05:00</updated>
+    <id>http://johntron.github.com/communication/measurability-and-metrics-are-king</id>
+    <content type="html"><![CDATA[<p>Lately I’ve been thinking about success and how it is achieved. I feel that a large part of success is simply being able to produce reasonably accurate statistics that prove your success. 1 million members, 10,000 clicks a day, $1 million in revenue, etc.</p>
+
+<p>I got the idea while I was at the <a href="http://bigdesignconference.com/">Big Design Conference</a> in Dallas, TX. I saw <a href="http://www.poetpainter.com/">Stephen Anderson</a>‘s talk about turning everyday activities into games, and then went to <a href="http://answerlab.com/about/leadership.php/">Amy Buckner</a>‘s talk about web analytics. Competition is like a race to see who can get the most of something. This something can be users, traffic, money, or something else; however, without a number, this information is meaningless.</p>
+
+<p>In our culture, numbers have some serious gusto. They are the deciding factor in everything we do. Do you eat the food that’s cheaper, or the one with less calories? Do we buy the car that gets better MPG or has more horsepower? Do we invest in the company with a better P/E ratio or a larger market share?</p>
+
+<p>Because of this bias, competition between businesses can easily be influenced by metrics. We often hear “Wonkybutz just passed X million users” or “Net profits for Tequilavision just exceeded $1 million”. When these headlines hit the media channels, popular opinion is greatly effected. We read these short phrases with a number in them and subconsciously think, “Well, I guess that means they’re king of the hill now”. The first company to publish a metric with any clout is often deemed reigning champion, or at least an early leader.</p>
+
+<p>Recently, this happened last Wednesday with Apple and Microsoft when <a href="http://www.nytimes.com/2010/05/27/technology/27apple.html">Apple’s market capitalization exceeded the Redmond folks for the fist time</a>. This news spread like wildfire. People started speculating. Are people going to take Microsoft more seriously now that they’re the underdog? <a href="http://twitter.com/Johntron/statuses/14919022901">I was guilty of this myself</a>.</p>
+
+<p>Unfortunately, metrics are widely misunderstood. It is easy for a company to publish inflated or misleading metrics, and this has powerful implications on popular opinion. Most people don’t understand market capitalization as a metric, and those that do are still effected by its social impact. Capitalization is based on speculation. The total value of Apple’s public shares, in USD, is now greater than Microsofts. It is a stretch to say Apple is now more powerful than Microsoft, because market capitalization is NOT a measure of power or influence. <a href="http://blogs.computerworld.com/16214/is_apple_really_more_valuable_than_microsoft">Sharon Machlis</a> does a good job at pointing out the facts.</p>
+
+<p>So much of our lives is based on numbers. Science is driven ever further towards a better future because of measurability. The tides of our economy rise and fall in unison with popular metrics. Online culture is at the mercy of analytics. When we’re surrounded by numbers on a daily basis, it’s easy to get lost in them. We must constantly remind ourselves: “This is just a number. What does it really mean?”.</p>
+]]></content>
+  </entry>
+  
+</feed>

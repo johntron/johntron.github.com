@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: economics | Johntron.com]]></title>
+  <link href="http://johntron.github.com/blog/categories/economics/atom.xml" rel="self"/>
+  <link href="http://johntron.github.com/"/>
+  <updated>2013-01-31T08:10:55-06:00</updated>
+  <id>http://johntron.github.com/</id>
+  <author>
+    <name><![CDATA[John Syrinek]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Piracy, Early Adoption, and Eventual Sale]]></title>
+    <link href="http://johntron.github.com/economics/eventual-sale/"/>
+    <updated>2009-12-07T00:00:00-06:00</updated>
+    <id>http://johntron.github.com/economics/eventual-sale</id>
+    <content type="html"><![CDATA[<p style="margin-top: 5px;">
+  After reading <a href="http://www.boingboing.net/2009/12/06/study-people-who-buy.html">Boing Boing’s report on counterfeit bags</a>, I realized Professor Gosline may be stumbling onto something with huge implications.
+</p>
+
+
+<p><span style="font-size: 18px; line-height: 125%; font-family: Verdana, Geneva, sans-serif;">I think about piracy – a lot. I feel most people are honest and are willing to pay for good products. I don’t think this is necessarily a bad thing for business.</span></p>
+
+<p>Early adoption is the key to market share. Some wise person (Will Shipley?) said you should give your software away to 90% of your users, and then sell it to the other 10% <img src="http://johntron.github.com/wp-content/uploads/2009/12/arrow.png" alt="arrow" title="arrow" width="46" style="left:-20px; position:relative; top:4px; vertical-align:top;" /></p>
+
+<div style="float:left; font-weight:bold; margin: 0 171px -30px 20px; position:relative; text-align:justify; top:-48px; font-family: Verdana;">
+  Gain market share, then sell it to the largest market possible. In the product life cycle, the trend starts with early adopters. I think this applies to and individual’s experience with a product as well.
+</div>
+
+
+<p>People who cannot afford to comfortably buy a product are probably not going to buy it. They’re going to pirate it. Thus the company unknowingly and unwillingly gives the user something for free. The user is probably not going to feel good about this, so later on, when things improve for them financially, they’ll probably end up purchasing the real deal.</p>
+
+<p>Possibly the worst thing you can do is sue your users, but you also don’t want to publicly approve of this strategy, because. Then you eliminate the guilt that leads to reciprocity. <em>Pirates are very strong potential customers, and it’s cheaper, more practical, and possibly more profitable to</em> NOT <em>sue them and hope for a sale later.</em></p>
+
+<p><a href="http://www.adobe.com/products/"><img alt="Adobe Photoshop" src="http://www.adobe.com/images/shared/product_mnemonics/48x45/photoshop_cs4_48x45.gif" title="Adobe Photoshop" style="float:left; margin-right:12px;" width="48" height="45" /></a>Adobe’s products are a good example. Most students cannot afford them (even with a massive student discount), so they pirate the software instead (possibly for years). Most people I know have a good experience with Adobe’s products, economic issues aside. They know it’s great software, and they’ll eventually want to return the favor.</p>
+
+<p>So if you have a good product that adds real value to peoples’ lives, quit worrying about pirates. They’ll come around.</p>
+]]></content>
+  </entry>
+  
+</feed>

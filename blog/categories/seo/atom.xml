@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: SEO | Johntron.com]]></title>
+  <link href="http://johntron.github.com/blog/categories/seo/atom.xml" rel="self"/>
+  <link href="http://johntron.github.com/"/>
+  <updated>2013-01-31T08:10:55-06:00</updated>
+  <id>http://johntron.github.com/</id>
+  <author>
+    <name><![CDATA[John Syrinek]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[A solution for SEO, Flash, and accessibility]]></title>
+    <link href="http://johntron.github.com/seo/seo-flash-accessibility/"/>
+    <updated>2008-04-02T00:00:00-05:00</updated>
+    <id>http://johntron.github.com/seo/seo-flash-accessibility</id>
+    <content type="html"><![CDATA[<p>This document outlines how to produce a website that uses one Flash video as its primary content, but does not sacrifice search engine visibility by doing so. During my time as a software developer in Dallas, TX, I’ve spent a lot of time trying to get Flash sites to play nicely with search engines.</p>
+
+<p>One of the prevailing ways of doing this uses SWFObject, as demonstrated by Jonathan Hochman in “How to SEO Flash” [<a href="#ref1">1</a>]. Using SWFObject adds an additional requirement to the user experience. To experience the site as it is intended, a user’s browser must support Javascript in addition to Flash. This approaches the gray area in the context of web standards. To address this problem, Drew McLellan came up with a method he calls the “Satay Method” [<a href="#ref2">2</a>]. The Satay Method seems to be as close as you can get to supporting rich user-experiences, search engine optimization, and standards compliance all at the same time.</p>
+
+<p>However, there is one additional problem that needs to be addressed. I’ve simply pointed out a common approach. When a user visits a website for the first time, they will be viewing a landing page. A landing page is not necessarily the homepage. Many search engine results point directly to internal pages on a particular domain. To address this problem, a routing script should be placed inside of the primary flash video. This script will start playback at a particular spot depending on which webpage is being viewed.</p>
+
+<h3>Site structure requirements</h3>
+
+<ul>
+<li><ul>
+<li>*Pages should be structured the same as HTML-only sites. Each page should contain HTML links to other pages, as well as unique HTML content.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>HTML requirements</h3>
+
+<ul>
+<li><ul>
+<li>*Each page should provide both HTML and Flash. HTML should be visible, unless the user’s browser supports an adequate version of Flash. If the browser does not support the correct version of Flash, the website should this to the browser. As long as the browser is aware of an outdated version of Flash, it can ask the user to upgrade to a newer version. Because the primary Flash object will not indicate which version of Flash it uses (for standards purposes), an additional (dummy) Flash video should be included that specifies the version used by the primary Flash video. If this is confusing, see the example.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Flash requirements</h3>
+
+<ul>
+<li><ul>
+<li>*The primary movie should be small enough to load immediately without buffering. If it is not small enough, IE may decide to wait for the whole movie to load before starting playback. If the flash video is too big to be loaded immediately, it should be replaced by a separate, smaller Flash object that will load the larger movie immediately. I’ll call this a proxy object.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Because users may enter the site from places other than the homepage (ie. search engine results linking directly to a specific page), the Flash video should also be able to begin playback on the correct “page” depending on which HTML page was loaded. Use HTTP query parameters and a routing script on the first frame of the root level of the Flash video for this. If a proxy flash object is used, certain query parameters may need to be forwarded to the primary flash video for routing to be performed correctly.</p>
+
+<p>Each semantic section of the flash video should have a corresponding directory on the web server. Each semantic page of the Flash video should have a corresponding HTML page on the webserver — in the correct directory.</p>
+
+<h3>Javascript requirements</h3>
+
+<ul>
+<li><ul>
+<li>*There should be none. Behavior should only be added to a webpage if it adds value to the user experience. Content should only be added using Javascript if it is insignificant or unrelated to the rest of the content on the page.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Limitations and concerns</h3>
+
+<ul>
+<li><ul>
+<li>*Recent versions of IE will require users to click on the Flash video before playback will begin. You could follow the method outlined here and also include Javascript to load the Flash object after the page has loaded. I have not personally tested this, but it seems like it should work.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>I do not have access to recent versions of the JAWS screen reader. The Satay method of including Flash objects has been known not to work in older versions of JAWS.</p>
+
+<h3>Examples</h3>
+
+<hr />
+
+<h4>Sitemap:</h4>
+
+<pre>/ [Document Root]
+     index.html
+     /features
+        index.html
+     /art
+        index.html
+        /history
+           index.html
+     /contacts
+        index.html</pre>
+
+
+<h4>HTML:</h4>
+
+<pre>&lt;html&gt;
+      &lt;head&gt;
+         &lt;title&gt;SEO Title&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+         &lt;!-- Dummy object for version detection --&gt;
+         &lt;object type="application/x-shockwave-flash"
+               codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"
+               style="display: none; visibility: hidden;"&gt;
+            &lt;param name="movie" value="dummy.swf" /&gt;
+         &lt;/object&gt;
+
+         &lt;!-- Actual video --&gt;
+         &lt;object type="application/x-shockwave-flash" data="flash.swf?page=home" width="400" height="300"&gt;
+            &lt;param name="movie" value="flash.swf?page=home" /&gt;
+            &lt;div&gt;
+               Copy . . .
+            &lt;/div&gt;
+         &lt;/object&gt;
+      &lt;/body&gt;
+   &lt;/html&gt;</pre>
+
+
+<h4>Actionscript:</h4>
+
+<pre>// If this code is placed in a proxy flash object, load that movie and
+  // forward the request
+
+  // Maps page names to frame numbers
+  var lookup:Object = new Object();
+  lookup.home = 6;
+  lookup.features = 128;
+  lookup.art = 394;
+  lookup.history = 228;
+  lookup.contacts = 578;
+
+  // `page` is passed in from the HTTP GET parameter
+  gotoAndStop( lookup[ page ] );</pre>
+
+
+<hr />
+
+<p><strong>Sources:</strong></p>
+
+<ol>
+<li><a name="ref1"></a> – Jonathan Hochman – “How to SEO Flash”</li>
+<li><a name="ref2"></a> – Drew McLellan – “Flash Satay: Embedding Flash While Supporting Standards”</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

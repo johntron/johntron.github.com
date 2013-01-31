@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Advice | Johntron.com]]></title>
+  <link href="http://johntron.github.com/blog/categories/advice/atom.xml" rel="self"/>
+  <link href="http://johntron.github.com/"/>
+  <updated>2013-01-31T08:10:55-06:00</updated>
+  <id>http://johntron.github.com/</id>
+  <author>
+    <name><![CDATA[John Syrinek]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Effective Graph Layout]]></title>
+    <link href="http://johntron.github.com/advice/effective-graph-layout/"/>
+    <updated>2012-10-20T00:00:00-05:00</updated>
+    <id>http://johntron.github.com/advice/effective-graph-layout</id>
+    <content type="html"><![CDATA[<p>I found this while writing some D3: <a href="http://seeingcomplexity.wordpress.com/2011/02/05/hierarchical-edge-bundles/" title="Seeing Complexity – Hierarchical Edge Bundles">Seeing Complexity – Hierarchical Edge Bundles</a> – a really great read on the graph drawing problem and various approaches. This is a really great read for anyone trying to figure out the best way to draw a particular graph.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DELL Design Library]]></title>
+    <link href="http://johntron.github.com/advice/dell-design-library/"/>
+    <updated>2012-06-25T00:00:00-05:00</updated>
+    <id>http://johntron.github.com/advice/dell-design-library</id>
+    <content type="html"><![CDATA[<p><a href="http://www.delldesignlibrary.com/">DELL’s Design Library</a> is a boon to UI developers – lots of great stuff! I learned about it at this year’s Big Design Conference in a discussion led by Jonathan Atkins, Jim Machajewski, <a href="http://harrisonpad.com/" title="Bill Harrison">Bill Harrison</a>, and Ashley Eaton.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Javascript classes using Object Notation (JSON) with constructor]]></title>
+    <link href="http://johntron.github.com/advice/json-with-constructor/"/>
+    <updated>2011-05-02T00:00:00-05:00</updated>
+    <id>http://johntron.github.com/advice/json-with-constructor</id>
+    <content type="html"><![CDATA[<p>If you’re like me, you get really tired of looking at ugly JavaScript. Sure, JavaScript sourcecode can be very clean and concise, but why is there so much ugliness? <a href="http://json.org/">JSON</a> is our saving grace, but only if you know how to wield it.</p>
+
+<p>If you want a history lesson on JSON,<br/>
+[javascript]var animal = function( species ) {<br/>
+return {<br/>
+species: null,<br/>
+init: function( species ) {<br/>
+this.species = species<br/>
+return this<br/>
+},<br/>
+toString: function() {<br/>
+return ‘This is a ‘ + this.species<br/>
+}<br/>
+}.init( species )<br/>
+}<br/>
+var cat = new animal( ‘cat’ )<br/>
+var dog = new animal( ‘dog’ )<br/>
+document.write( cat.toString() )<br/>
+document.write( dog.toString() )[/javascript]</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Managing users on OS X 10.5+]]></title>
+    <link href="http://johntron.github.com/advice/managing-users-on-os-x-10-5/"/>
+    <updated>2010-10-28T00:00:00-05:00</updated>
+    <id>http://johntron.github.com/advice/managing-users-on-os-x-10-5</id>
+    <content type="html"><![CDATA[<p>From time to time, I have to add a new user to an OS X server. This can be done from the desktop using the Accounts preference pane under System Preferences; however, many times I do not have access to the desktop (through VNC), so I am forced to use SSH. OS X is very different from linux distributions that use commands like <code>pw</code>, <code>useradd</code>, or <code>adduser</code>.</p>
+
+<p>Here’s a great article explaining how to do this in OS X 10.5 and higher: <a href="http://osxdaily.com/2007/10/29/how-to-add-a-user-from-the-os-x-command-line-works-with-leopard/" target="_blank">How to: Add a user from the OS X command line, works with Leopard!</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The Elusive Expert Web Developer]]></title>
+    <link href="http://johntron.github.com/advice/the-elusive-expert-web-developer/"/>
+    <updated>2010-10-26T00:00:00-05:00</updated>
+    <id>http://johntron.github.com/advice/the-elusive-expert-web-developer</id>
+    <content type="html"><![CDATA[<p>Expert web developers are hard to find and hard to keep. They operate in an industry in constant flux, survive by constantly reinventing themselves, and thrive on their ability to generalize insight gained through deep understanding and experience. To them, writing code is no longer about solving a problem so much as doing it in a particular way.</p>
+
+<blockquote><p>To the savvy web developer, time constraints, complexity, and technological requirements are no threat – simply another piece of a larger perspective. Software development is not a question of “how”, but rather a question of “in what manner”.</p></blockquote>
+
+<p>The thing that sets expert web developers apart from the crowd – it’s <a title="Tons of crappy freelancers" href="http://www.freelancer.com/" target="_blank">definitely a crowd</a> – is their breadth and depth of knowledge. They understand software down to individual bits and bytes, but they also work well with the human aspects of software like design and usability, teamwork, and business decisions. A single expert can do the work of multiple developers in less time.</p>
+
+<p>With all of this being said, how can you recognize <a title="Johntron! :D" href="http://johntron.com/" target="_self">an expert web developer</a> and work with them to get things done? The first part is easy. If you’ve worked with one, you would have noticed. Just look over their shoulder for a few minutes, and you’ll see windows flicker, hear keys on their keyboard popping like bubble wrap under a steamroller, and smell the burning from their computer’s fan as it struggles just to keep up. Their productivity is magnitudes higher than other developers. They can work by themselves, communicate progress, and adapt to input from coworkers or clients. Some may demand higher pay, but many are just looking for something fun to work on.</p>
+
+<p>There’s also another way to recognize the champions. Because of their abilities, they constantly seek challenges and new frontiers. Unfortunately, many people realize a great web developer after they have left to pursue more interesting work. They leave for many reasons such as too much busy work, lack of freedom, or too many rules and procedures. <em>If they exist in an environment devoid of challenges and inspiration, there is nothing you can do to turn them around</em>. For this reason, it is important to provide challenges and listen carefully.</p>
+
+<p>When you’re working with an expert web developer, getting things done is a matter of accommodating the developer. Frederick Brooks does a great job of explaining what this looks like in his iconic book <em><a title="The Mythical Man Month" href="http://www.amazon.com/Mythical-Man-Month-Software-Engineering-Anniversary/dp/0201835959/ref=sr_1_1?ie=UTF8&qid=1288154678&sr=8-1" target="_blank">The Mythical Man Month</a></em>. Individuals should operate like members of a surgical team. The expert developer is the surgeon, and members of the design team, copywriters, business analysts, and others surround him ready to provide him with what he needs at any given moment. They take his work and round it out with design assets, documentation, customer service, feedback, and suggestions.</p>
+
+<p>Providing support is important when working with an expert developer, but it’s more important to satiate their craving for new challenges. When they work on the same thing day in and day out, you may notice their productivity slipping, and their general demeanor becoming more complacent. If this happens, you need to act quickly to engage them. One way is by giving them some time to themselves. Let them work on their own ideas. I think you’ll find that the time you’ve given up to them is made up for by increases in productivity. When they have a project they’re interested in, it inspires them, and this inspiration carries over into all of their actions.</p>
+
+<p>Many times expert web developers are simply content with a change of scenery. This may mean moving them to a new project, encourage them to incorporate <a title="new technologies" href="http://github.com/repositories" target="_blank">new technologies</a>, or even just moving the furniture around (literally). Ask them for a prototype of an idea you or your team came up with but never focused on. Buy that latest <a title="Gee-wiz software" href="http://www.panic.com/coda/" target="_blank">gee-wiz software</a> that lets them build widgets in a new way. Buy a couch. Give them gift cards to coffee shops and tell them to work from there. Send them to a <a title="Google I/O" href="http://code.google.com/events/io/" target="_blank">tech conference</a>. Sometimes they might need a breather, so give them a day or two of paid time off.</p>
+
+<p>One of the biggest misconceptions when working with developers is that getting things done is a matter of management – setting deadlines, monitoring progress, adding new team members, having more meetings, etc. While this may be true for novice-level developers, it is just the opposite for the <a title="Joel Spolsky" href="http://www.joelonsoftware.com/" target="_blank">hero developers</a>. Their success relies on inspiration, challenges, and mobility. I’ve known a lot of developers personally as well as professionally. A lot of them approach it as job or even a hobby, but the great ones stand out because their approach to software is holistic. Their demeanor is enthusiastic, their hobbies are unique, their style reflects their expert status, and the decisions they make are centered around software. There is no stopping them.</p>
+
+<p style="text-align: center;">
+  <img class="aligncenter size-full wp-image-602" title="Expert web developers type like steam rollers over bubblewrap" src="http://johntron.com/wp-content/uploads/2010/10/bubble-wrap.png" alt="Expert web developers type like steam rollers over bubblewrap" width="580" height="488" />
+</p>
+
+]]></content>
+  </entry>
+  
+</feed>

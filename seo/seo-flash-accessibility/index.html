@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>A solution for SEO, Flash, and accessibility - Johntron.com</title>
+  <meta name="author" content="John Syrinek">
+
+  
+  <meta name="description" content="This document outlines how to produce a website that uses one Flash video as its primary content, but does not sacrifice search engine visibility by &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://johntron.github.com/seo/seo-flash-accessibility/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Johntron.com" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Johntron.com</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:johntron.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">A Solution for SEO, Flash, and Accessibility</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-02T00:00:00-05:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This document outlines how to produce a website that uses one Flash video as its primary content, but does not sacrifice search engine visibility by doing so. During my time as a software developer in Dallas, TX, I’ve spent a lot of time trying to get Flash sites to play nicely with search engines.</p>
+
+<p>One of the prevailing ways of doing this uses SWFObject, as demonstrated by Jonathan Hochman in “How to SEO Flash” [<a href="#ref1">1</a>]. Using SWFObject adds an additional requirement to the user experience. To experience the site as it is intended, a user’s browser must support Javascript in addition to Flash. This approaches the gray area in the context of web standards. To address this problem, Drew McLellan came up with a method he calls the “Satay Method” [<a href="#ref2">2</a>]. The Satay Method seems to be as close as you can get to supporting rich user-experiences, search engine optimization, and standards compliance all at the same time.</p>
+
+<p>However, there is one additional problem that needs to be addressed. I’ve simply pointed out a common approach. When a user visits a website for the first time, they will be viewing a landing page. A landing page is not necessarily the homepage. Many search engine results point directly to internal pages on a particular domain. To address this problem, a routing script should be placed inside of the primary flash video. This script will start playback at a particular spot depending on which webpage is being viewed.</p>
+
+<h3>Site structure requirements</h3>
+
+<ul>
+<li><ul>
+<li>*Pages should be structured the same as HTML-only sites. Each page should contain HTML links to other pages, as well as unique HTML content.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>HTML requirements</h3>
+
+<ul>
+<li><ul>
+<li>*Each page should provide both HTML and Flash. HTML should be visible, unless the user’s browser supports an adequate version of Flash. If the browser does not support the correct version of Flash, the website should this to the browser. As long as the browser is aware of an outdated version of Flash, it can ask the user to upgrade to a newer version. Because the primary Flash object will not indicate which version of Flash it uses (for standards purposes), an additional (dummy) Flash video should be included that specifies the version used by the primary Flash video. If this is confusing, see the example.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Flash requirements</h3>
+
+<ul>
+<li><ul>
+<li>*The primary movie should be small enough to load immediately without buffering. If it is not small enough, IE may decide to wait for the whole movie to load before starting playback. If the flash video is too big to be loaded immediately, it should be replaced by a separate, smaller Flash object that will load the larger movie immediately. I’ll call this a proxy object.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Because users may enter the site from places other than the homepage (ie. search engine results linking directly to a specific page), the Flash video should also be able to begin playback on the correct “page” depending on which HTML page was loaded. Use HTTP query parameters and a routing script on the first frame of the root level of the Flash video for this. If a proxy flash object is used, certain query parameters may need to be forwarded to the primary flash video for routing to be performed correctly.</p>
+
+<p>Each semantic section of the flash video should have a corresponding directory on the web server. Each semantic page of the Flash video should have a corresponding HTML page on the webserver — in the correct directory.</p>
+
+<h3>Javascript requirements</h3>
+
+<ul>
+<li><ul>
+<li>*There should be none. Behavior should only be added to a webpage if it adds value to the user experience. Content should only be added using Javascript if it is insignificant or unrelated to the rest of the content on the page.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Limitations and concerns</h3>
+
+<ul>
+<li><ul>
+<li>*Recent versions of IE will require users to click on the Flash video before playback will begin. You could follow the method outlined here and also include Javascript to load the Flash object after the page has loaded. I have not personally tested this, but it seems like it should work.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>I do not have access to recent versions of the JAWS screen reader. The Satay method of including Flash objects has been known not to work in older versions of JAWS.</p>
+
+<h3>Examples</h3>
+
+<hr />
+
+<h4>Sitemap:</h4>
+
+<pre>/ [Document Root]
+     index.html
+     /features
+        index.html
+     /art
+        index.html
+        /history
+           index.html
+     /contacts
+        index.html</pre>
+
+
+<h4>HTML:</h4>
+
+<pre>&lt;html&gt;
+      &lt;head&gt;
+         &lt;title&gt;SEO Title&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+         &lt;!-- Dummy object for version detection --&gt;
+         &lt;object type="application/x-shockwave-flash"
+               codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"
+               style="display: none; visibility: hidden;"&gt;
+            &lt;param name="movie" value="dummy.swf" /&gt;
+         &lt;/object&gt;
+
+         &lt;!-- Actual video --&gt;
+         &lt;object type="application/x-shockwave-flash" data="flash.swf?page=home" width="400" height="300"&gt;
+            &lt;param name="movie" value="flash.swf?page=home" /&gt;
+            &lt;div&gt;
+               Copy . . .
+            &lt;/div&gt;
+         &lt;/object&gt;
+      &lt;/body&gt;
+   &lt;/html&gt;</pre>
+
+
+<h4>Actionscript:</h4>
+
+<pre>// If this code is placed in a proxy flash object, load that movie and
+  // forward the request
+
+  // Maps page names to frame numbers
+  var lookup:Object = new Object();
+  lookup.home = 6;
+  lookup.features = 128;
+  lookup.art = 394;
+  lookup.history = 228;
+  lookup.contacts = 578;
+
+  // `page` is passed in from the HTTP GET parameter
+  gotoAndStop( lookup[ page ] );</pre>
+
+
+<hr />
+
+<p><strong>Sources:</strong></p>
+
+<ol>
+<li><a name="ref1"></a> – Jonathan Hochman – “How to SEO Flash”</li>
+<li><a name="ref2"></a> – Drew McLellan – “Flash Satay: Embedding Flash While Supporting Standards”</li>
+</ol>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Johntron</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-02T00:00:00-05:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2008</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/seo/'>SEO</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://johntron.github.com/seo/seo-flash-accessibility/" data-via="johntron" data-counturl="http://johntron.github.com/seo/seo-flash-accessibility/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/strategy/should-my-company-use-a-cms/" title="Next Post: Should my company use a CMS?">Should my company use a CMS? &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/hacking/ubuntu-12-boot-process-explained/">Ubuntu 12 boot process explained</a>
+      </li>
+    
+      <li class="post">
+        <a href="/advice/effective-graph-layout/">Effective Graph Layout</a>
+      </li>
+    
+      <li class="post">
+        <a href="/programming/better-logging-with-loggly-and-symfony-2/">Better logging with Loggly and Symfony 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/advice/dell-design-library/">DELL Design Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/mobile/how-to-root-a-kindle-fire-on-os-x/">How to root a Kindle Fire on OS X</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/johntron">@johntron</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'johntron',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("johntron", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/johntron" class="twitter-follow-button" data-show-count="false">Follow @johntron</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/johntron?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - John Syrinek -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

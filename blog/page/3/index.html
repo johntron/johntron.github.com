@@ -1,0 +1,780 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Johntron.com</title>
+  <meta name="author" content="John Syrinek">
+
+  
+  <meta name="description" content="I use Subversion to deploy web applications using a simple svn update command on a production server. This is really convenient, but something has &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://johntron.github.com/blog/page/3/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Johntron.com" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Johntron.com</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:johntron.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/advice/decoupling-development-and-production/">Decoupling Development and Production Code</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-03-09T00:00:00-05:00" pubdate data-updated="true">Mar 9<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I use Subversion to deploy web applications using a simple <code>svn update</code> command on a production server. This is really convenient, but something has always bothered me. Domain names for production servers are never the same as the development servers. This is true regardless of whether you use PHP, Python, Ruby, or something else. For this reason, deploying is never as easy as typing <code>svn update</code>.</p>
+
+<p>This specific problem is fairly new to computer science, because server-side scripting languages are relatively new in the whole scheme of things. I’ve done some research, and I’ve documented the most elegant solution I could come up with to minimize the possibility of human error from the deployment process. As a professional web developer, this method has saved me many headaches and lots of man hours.</p>
+
+<p class="list_header">
+  Here are the highlights:
+</p>
+
+
+<ul>
+<li>Machine independent</li>
+<li>Language independent</li>
+<li>Easy to deploy</li>
+<li>Easy to setup</li>
+<li>Maintenance free (no tweaking during the deployment phase)</li>
+<li>Standard (available on most systems)</li>
+</ul>
+
+
+<p>This system uses <code>m4</code> and <code>make</code>. <code>m4</code> is tool used to generate code from macros (among other things). Using m4 means we can do things similar to preprocessor directives in C languages. Make is a build tool used for generating non-source files from source files. Using make means we can generate one set of files for a development environment, and one set of files for a production environment. This system is very common, and has been around for years, so there should be plenty of documentation out there.</p>
+
+<p class="list_header">
+  After setting up this build system, deployment would work like this:
+</p>
+
+
+<ol>
+<li>From a development server, commit changes to a Subversion repository</li>
+<li>From a production server, update a working copy</li>
+<li>Run `make`</li>
+</ol>
+
+
+<p>I will not discuss Subversion, as this is covered elsewhere. I’ll assume you know this, so let’s get started by creating an m4 file.</p>
+
+<h3>m4 as a Preprocessor</h3>
+
+<p>Ideally, all of the machine-specific settings should be stored in a single file. This is often called a config file or a settings file. In my case, the file is named “settings.py”, because I’m writing some software using Django. To decouple the machine-specific code, I will need to be able to write macros in settings.py. To do this, I rename the file to “settings.py.m4″. The m4 extension is used to denote files that should be processed with m4 (clearly). After renaming the file, I can use whatever macros I want. The most useful macro is a simple <code>if…else…</code> function called <code>ifdef()</code>.</p>
+
+<p class="list_header">
+  The most common <code>ifdef()</code> macro will look like this:
+</p>
+
+
+<pre><code>ifdef(`debug', `True', `False')
+</code></pre>
+
+<p>m4 would replace this statement with <code>True</code> or <code>False</code> based on whether or not <code>debug</code> is defined. The true power of this is made apparent when you start assigning URLs to variable.</p>
+
+<p class="list_header">
+  For instance, imagine a file that contains this line of code:
+</p>
+
+
+<pre><code>DEBUG = True
+</code></pre>
+
+<p>This <code>DEBUG</code> variable could be used to control output and logging. Clearly, debug should never be enabled on a production server (gross). So how would you account for two different environments? The most straightforward solution would be to manually edit this file after each <code>svn update</code> or perhaps have Subversion ignore this file. By manually editing this file each time, you are assuming you’ll remember to do this. By ignoring this file from Subversion, you’re throwing out all the benefits of version control.</p>
+
+<p class="list_header">
+  So here is where m4 comes in. Replace the line of code listed above with this:
+</p>
+
+
+<pre><code>DEBUG = ifdef(`debug', `True', `False')
+</code></pre>
+
+<p class="list_header">
+  Notice that <code>debug</code> is not defined yet (not to be confused with <code>DEBUG</code>). If we were to run m4 on this file, this line would end up looking like this:
+</p>
+
+
+<pre><code>DEBUG = False
+</code></pre>
+
+<p class="list_header">
+  So now we just need to define “debug” at a higher level. The best place for this is at the command line. With m4, you can define variables on the command line. Use the <code>-D</code> flag to accomplish this. In our case we would type something like this (from the command line): <code>m4 -D debug settings.py.m4</code>. After hitting enter, you would see the entire settings.py.m4 file output to the shell. If you look carefully, you should see the following:
+</p>
+
+
+<pre><code>DEBUG = True
+</code></pre>
+
+<p class="list_header">
+  Try running the same command again, but without the <code>-D debug </code> this time. You should see:
+</p>
+
+
+<pre><code>DEBUG = False
+</code></pre>
+
+<p>When you’re done learning about m4, run the command one last time, but this time save the output to a file by running this command: <code>m4 -D debug settings.py.m4 &gt; settings.py</code> Now we’ve decoupled our machine-specific code and can control it from the command line. The last step is to make things a little easier to remember. <code>make</code> is great for this, because it allows us to create build targets.</p>
+
+<h3>Deploying web software with make</h3>
+
+<p>A target is simply a final copy of an application. In our case, we will have a development target and a production target. Begin simplifying things by creating a file name “Makefile” in the highest level directory of your source code. This file is used by make to determine what needs to be done for any given build target. The syntax of this file is pretty simple.</p>
+
+<p class="list_header">
+  My Makefile looks like this:
+</p>
+
+
+<pre><code>live:
+    m4 placethings/settings.py.m4 &gt; placethings/settings.py
+
+development:
+    m4 -D debug placethings/settings.py.m4 &gt; placethings/settings.py
+</code></pre>
+
+<p>This file defines two targets: <code>live</code> and <code>development</code>. To build a target, we type: <code>make [target]</code>. Make assumes the first target is the default, so we can just type <code>make</code>, and “settings.py.m4″ would be processed for a production environment and saved to “settings.py”. Alternatively, we could type <code>make development</code> and “settings.py.m4″ would be processed for a development environment and saved to “settings.py”.</p>
+
+<p>The last step is to put these files under version control along with everything else ( using <code>svn add</code>). If you wanted to, you could even go one step further and add <code>svn update</code> to your Makefile. There are advantages and disadvantes to this. I prefer not to do this, because anything that happens during the update process can affect the rest of the build process.</p>
+
+<p>Clearly, I’m passionate about removing the possiblity of human error. Some might say this is obsessive, but I say it’s what makes good software great. Now, instead of potentially spewing code traces at your users without realizing it everytime you change your code, you just have to make sure your build process works next time you use an <code>ifdef()</code> in your settings.py.m4 file. This is much easier to do than trying to trigger an exception on the production server.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/advice/the-brick-wall/">The Brick Wall</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-12-16T00:00:00-06:00" pubdate data-updated="true">Dec 16<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>All programmers tend to hit a brick wall. This is hard to describe to people that haven’t experienced it first-hand, but I personally feel that the primary cause of this is boredom. Passion is a very powerful force, especially when paired with something as technical as programming. In my experience as a software developer in Dallas, TX, some programmers will stick around at the same job and become complacent, but the really good developers just leave in search of something that appeals to their interests. Because of this, it’s important to nurture a developers private interests. It is important to realize that an individual’s interests tend to change, and there’s not a lot that can be done to prevent this, but here are a few suggestions that I think might help:</p>
+
+<ul>
+<li><p>Stay fresh: Allocate a certain amount of time each week for the developer to do whatever he wants, as long as it is loosely job-related. Off the clock, most developers enjoy reading tech news, scouring blogs, participating in online discussions, learning new technologies, and other techy things.</p></li>
+<li><p>Get a library card: Come up with a budget for developers to spend on reading material. This can be magazines, books, online subscriptions to anything related to technology, business, or any other form of “work-related” material. I’m sure every developer out there is familiar with the O’Reilly books and their online subscription.</p></li>
+<li><p>Start a blog: Let developers create, maintain, and improve on their own blog. Let them publish articles, create blog plugins, and tweak the design of their own personal blog. To some, this may pose a threat to intellectual property. WordPress.org</p></li>
+<li><p>Find some music: Most developers I know like to listen to music while they work. Music is invigorating, and can help make tedious, mind-numbing work less painful. A budget for buying music could improve productivity and creativity. iTunes gift cards, or a subscription to some online music service could go a long way. Pandora.com is nice, and so is the Hype Machine (which happens to be free).</p></li>
+<li><p>Improve the workspace: Personally, I feel most people are oblivious to the negative effects of a dull workspace. I don’t know how anyone can expect to work in a place that is &#8230; crappy. Yuck. For this I suggest a budget for improving the workspace — buying thinks to put on the desk, hang on the wall, comfortable furniture, paint, etc. I’d imagine most programmers don’t think about this, but they’d definitely appreciate some work in this area.</p></li>
+<li><p>Insulation: I like describing programming as playing a really long game of chess. If a work environment is polluted with distractions, it’s like someone punching you in the face each time you’re about to move a chess piece. A private office, or at least a good pair of headphones can help here.</p></li>
+</ul>
+
+
+<p>So there’s my recommendations.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/advice/advice-for-programmers-entering-the-job-market/">Advice for Programmers Entering the Job Market</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-06-25T00:00:00-05:00" pubdate data-updated="true">Jun 25<span>th</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>While I would much prefer to talk about some aspect of software development, I have decided to take a step back for a moment. As a Dallas-based software developer with an insatiable taste for figuring things out on my own, I’d like to explain three things I’ve learned since starting a career in software: how to deal with management and clients, acting as an ambassador, and coping with burnout. While these can all be generalized to any profession, I am going to explain how they affect developers, specifically. I’ll try not to bore you.</p>
+
+<h3>Managing management</h3>
+
+<p>There’s a lot that they don’t teach in school. While they would like to argue otherwise, I’d have to say that most professors neglect the business side of software. When a programmer enters the marketplace, they have to interact with people that are not like themselves. These people are coworkers (the easy part), customers, and bosses. While it’s easy to pick up how to work with other programmers, it’s much more difficult to work with non-technical people. The problem stems from a mutual ignorance of inherent differences. We don’t understand them, and they don’t understand us. We’re in a class of our own. <strong>We are driven by challenges and numerous sources of inspiration</strong>. Management and customers are (usually) completely different. While everyone is driven by the same things, these people tend to be driven by their reputation or revenue more so than developers.</p>
+
+<h3>You’re an ambassador</h3>
+
+<p>As you enter the marketplace, you must also realize you have two roles: a programmer, but also, <em>an ambassador</em>. This means playing a proactive part in your work environment. You have to do your job by writing code efficiently, but you must also be able to explain yourself and the things you produce to your peers. Provide frequent status updates (more than you think), and be ready for questions. Figure out a routine that works for you and your coworkers. Personally, I’ve found that giving verbal updates at the end of the day, and an email at the end of the week listing all of the things I’ve accomplished works well for me and my superiors. This keeps everyone on the same track, but also shows your superiors how productive you are. Your mileage may vary, because different companies require different levels of communication. I would speculate that larger companies can accomodate less communication than smaller companies, but this is just a hunch.</p>
+
+<p><strong>In the business world, communication is everything.</strong> If you’re going to miss a deadline, make sure the appropriate people know this. This is particularly important when you’re working with third parties. If a client shows up to a meeting expecting to see a completed project, the last thing you want to do is tell them, “Sorry, we need more time”. Take some initiative, explain the problem (in layman’s terms) and ask for some more time. As long as you haven’t pushed back the project too much already, I’m sure the client will understand. If the client doesn’t understand, be sure your management knows this so they can handle the client for you (that’s not your job). Who knows, management might just get rid of the client if they’re too unreasonable.</p>
+
+<h3>Burnout sucks</h3>
+
+<p><strong>As a programmer, you are highly succeptible to burnt out.</strong> You will at some point begin hating the things you’re currently working on, the people you work with, and possibly even programming in general. From what I have seen, in myself and my peers, this is normal. There are ways to delay the onset of this boredom as well as ways to reduce the effect.</p>
+
+<p>One way to avoid burnout is to avoid feeling rushed. Take your time, think things through, and enjoy your challenges. Yes, there are deadlines, and these are very important, but remember to pace yourself. If you start feeling overwhelmed, try to add some variety to your tasks and take the larger tasks in smaller steps. Progress is important, but working at a sustainable rate is just as important. There will be last-minute issues that must be dealt with as soon as possible. Deal with these as they come up, but try your hardest to avoid the major setbacks. This is probably one of the hardest things to conquer. Computer science is not as concrete as most people realize. Our work is fraught with hidden conflicts.</p>
+
+<p><em>Here’s an example:</em> Recently I was moving a website to a production server from a development server. The website was mostly plain HTML, with some PHP includes interspresed throught the site to handle some common sections of the site (my production team refers to them as “includes” in short). The development server and the production server were virtually identical; however, the production server allowed for PHP short tags (a historical relic from PHP 4), and the development server did not. This means that anytime the server sees the “&lt;?” and “?>” tags, it sends the stuff between them to the PHP interpreter for parsing. Unfortunately, most of the pages we were transferring had the following at the very top of the file:</p>
+
+<pre>&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt;</pre>
+
+
+<p>Obviously, this isn’t PHP code (though it is good practice). The server was the first to point out the problem, and this is not good on a live site. The solution I came up with was to run some fancy commands through SSH to do a recursive find/replace for this string (replacing it with nothing) on the development server, then re-uploading everything. If the server did not belong to our client and was not on a shared hosting account, things would have been easier. Regardless of the solution, the point I’m trying to make is this – <strong>things come up, don’t freak out</strong>. Take things in steps and <em>be intentional with your actions</em>. If you don’t, you will begin sliding down the slippery slope known as burnout.</p>
+
+<p>Once burnout sets in, how do you deal with it? Unfortunately, there is no straightforward answer. Sometimes burnout lasts a few days, sometimes weeks (maybe a month?). If it is not too severe, simply getting some extra sleep each night can help. If it is very severe, you may need to use some of your paid-time-off (PTO). If deadlines are approaching, obviously you cannot just take a break. If this is the case, ask your superiors if you can get some more help. Begin by explaining the problem (you are overwhelmed, bored, or whatever), and suggest looking for a freelancer to help out for a while. If this doesn’t fly (and your bosses don’t hate you), you may be able to get some additional PTO after you’ve completed whatever it is you’re working on. My boss actually suggested this to me, so it’s definitely not unreasonable.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/strategy/should-my-company-use-a-cms/">Should My Company Use a CMS?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-02T00:00:00-05:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>There seem to be more and more companies in Dallas switching to Content Management Systems. It’s important to realize these are not for everybody. I’ll explain why high-traffic, high-income websites should hire a professional web firm to manage their website and online presence rather than using a CMS. At the end of the article, I suggest a <a href="#solution">solution</a> to companies looking to do content updates themselves.</p>
+
+<p><em>Here’s the story …</em></p>
+
+<p style="padding-top: 3px;">
+  As a software developer for <a href="http://www.standingdog.com">Standing Dog Interactive</a>, I have been tasked with managing a website for a large corporation. Another web firm managed the site previously; however, the corporation has changed their mind and decided to have us manage the site because we’re awesome. Somewhere along the line, the decision to use a CMS (Mambo) was made.
+</p>
+
+
+<p>Obviously, I’m biased. <strong>As a software developer working with professional designers, copywriters, and SEO specialists, I would prefer not to use a CMS</strong> and instead use conventional methods – HTML, CSS, PHP, Javascript, etc. I’m positive my coworkers would agree with this statement. At the same time, <strong>I understand why someone would prefer to update content themselves.</strong> Before you decide to implement a CMS, please allow me to point out the tradeoffs you will be making.</p>
+
+<h3>The wonder that is a Content Management System</h3>
+
+<ul>
+<li><ul>
+<li>*CMS’s are a truly ingenious idea. When used correctly, they allow anyone to quickly and easily update a website. This means anyone can create a web presence with very little technical knowledge.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>As a side note, I would like to say this:</p>
+
+<blockquote><p>I was the lead developer on a CMS project at my previous job. I understand all of the complexities that go along with developing such a system, so I would like to applaud the efforts of everyone working on these systems.</p></blockquote>
+
+<h3>The ugly side of Content Management Systems</h3>
+
+<ul>
+<li><ul>
+<li>*Most, if not all, CMS’s try to solve a monumental task: trying to allow non-technical users manage a highly-technical system. While CMS’s make valiant efforts to empower non-technical users, their results are very rarely ideal. A competent web firm will employ a very large, very diverse set of skills to build and update websites, including but not limited to the following.</p></li>
+</ul>
+</li>
+<li><p><strong>User interface and graphic design</strong> – making your site beautiful, clear, concise, and easy to navigate.</p></li>
+<li><strong>Copywriting</strong> – professional writers (English majors) writing truly enticing, informational content.</li>
+<li><strong>SEO</strong> – making sure people can find your site in the internet cloud.</li>
+<li><strong>Programming ( PHP, Javascript, etc )</strong> – simplifying complex or annoying tasks and empowering users.</li>
+<li><strong>Typography</strong> – making users <em>enjoy</em> reading content on the website.</li>
+<li><strong>Cross-browser compatibility</strong> – because certain browsers display particular parts of websites differently.</li>
+<li><strong>Accessibility</strong> – accommodating the visually impaired and supporting unconventional browsers such as cellular phones.</li>
+</ul>
+
+
+<p>The only way to accommodate all of these at one is to implement very complex layers of abstraction. At the same time, all of these layers will affect one another, so they must play nicely together. While CMS systems try to avoid it, this abstraction inherently places restrictions on the skills listed above. Below are various techniques commonly used to address the complexity of a website and how they affect a website.</p>
+
+<p><strong>HTML templates</strong></p>
+
+<p>These attempt to separate graphic design from website content by creating a reusable skeleton to which page-specific content can be added. Forcing the reuse of common templates make it very difficult to fine tune every detail of a website. These obsessive tweaks are what gives a website a truly polished look and feel.</p>
+
+<p><strong>URL rewriting</strong></p>
+
+<p>This mechanism attempts to make dynamically-created pages appear static. Search engines have a hard time indexing sites with dynamic content, and most refuse to do so. URL rewriting is usually done automatically, making it very difficult to relocate or rename individual pages.</p>
+
+<p>Also, while URL rewriting can make it easy for search engines to read content from a website, it cannot even begin to do this if it cannot find the site in the first place. SEO specialists use very creative techniques to ensure that your website will be at the top of search engine results pages. Many of these techniques are trade secrets.</p>
+
+<p><strong>Widgets</strong></p>
+
+<p>These are commonly called modules, plugins, components, or addons. These items are created to provide custom functionality without any programming knowledge. While this is very empowering, most of the time, one size does <em>not</em> fit all. Often times managers are looking for a very specific feature, cannot find a module to provide this feature, and are instead forced to use a widget that only <em>sort of</em> works.</p>
+
+<p>Obviously, features that only sort of works can hardly be called features. If a website manager chooses to have a custom module built for them, the same mechanism that allows for drop-in features also restricts programmers to working with only the inner-workings of the site that are made available to them by the CMS. If the CMS doesn’t allow them to modify a particular portion of the site, much more time and effort must be spent to implement features that uses this largely inaccessible area. When this happens, deadlines and budgets become very superficial.</p>
+
+<p><strong>WYSIWYG editors</strong></p>
+
+<p>Editors used to create stylized text without any knowledge of markup languages (HTML) and styling syntax (CSS). While this makes content management easy for people familiar with word processing applications, again, this forces managers to use only the tools and functionality they are provided. Often, this functionality is clunky and incomplete. From a software developer’s perspective, this is one of the hardest and most involved features to implement in a CMS.</p>
+
+<h3>There’s more</h3>
+
+<ul>
+<li><ul>
+<li>*A competent web firm will employ professionals capable of building ideal solutions for every single one of the issues listed above. This is one of those instances where you really do get what you pay for. If you are fine with making tradeoffs in some of these fields, then use a CMS.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>You may have noticed that I did not mention solutions to professional copywriting, cross-browser compatibility, or accessibility. This is because I have never seen a system that addresses these issues worth mentioning. To be honest, I’ve never seen a CMS that even attempts to address these. Perhaps someone will show me one after reading this article.</p>
+
+<h3>The economics of it all</h3>
+
+<ul>
+<li><ul>
+<li>*It is impossible to generalize the value of professional services. If two companies looking to improve their web presence spend the same amount of money for the same quality of work, one company may see dramatically increased revenue, while the other may see little or no increase in revenue. Some websites are just in a more profitable position in the online marketplace.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Also, users may ignore the shortcomings of one site, but not the shortcomings of another site, even if both sites have the same flaws. For example, if you are buying socks online, do you really care what the online store looks like? What about if you’re buying new furniture? More expensive products demand higher quality websites. A web firm can help you determine your online market position and suggest possible improvements.</p>
+
+<p>Market positions aside, there are a few more quantifiable expenditures. Changes to sites using CMS’s will naturally be more expensive than sites that don’t use them. This is because CMS’s add yet another layer of complexity to the entire equation. Aside from all of the skills listed in the beginning of this article, web firms must also learn to work with something unfamiliar to them. This creates an expensive learning curve, and somebody has to pay for the time spent learning this new system. It may be possible to hire a specialist that is familiar with a particular CMS, but specialists naturally charge a premium.</p>
+
+<p>Also, CMS’s only allow specific types of modifications. If the CMS does not allow a certain change, firms must explore uncharted waters. Digging around in the guts of something as complex as a CMS is very confusing and time consuming. This translates to highly “dynamic” development costs which someone must pay for. Managers should know exactly what features they require, and ask a professional which CMS would support such modifications if any.</p>
+
+<p>Finally, the future is unpredictable. You may eventually decide to have someone else manage your site. Be aware the changing hands like this will impose the CMS learning curve mentioned above. The new webmasters must familiarize themselves with the system. New features may also be desired that were not accounted for initially. Again, if the CMS doesn’t support these features, be prepared to pay high premiums.</p>
+
+<p>On the upside, it is often very easy to convert a site that uses a CMS to a completely static site. This means that you will lose the ability to update content without technical knowledge; however, professionals can update content for you just as quickly as someone using a CMS can.</p>
+
+<p><a name="solution"></a></p>
+
+<h3>A middle ground</h3>
+
+<ul>
+<li><ul>
+<li>*Add content management only to content that needs to be managed. As I’ve explained, it is much easier to restructure, redesign, or otherwise optimize an entire website if it is not built on a CMS. It is also fairly simple for a software developer to create custom software to manage content on a page by page basis. Instead of building an entire website using a CMS just to manage the content on a few pages, a more effective long-term solution would be to have a software developer create a very minimal program to update specific text in specific places of the website.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>So what does this mean?</h3>
+
+<ul>
+<li><ul>
+<li>*CMS’s work great, but only for what they were intended. I recommend using a CMS in the following instances.</p></li>
+</ul>
+</li>
+<li><p>If you have very simple, conventional website.</p></li>
+<li>If you are unfamiliar with the web technologies used to build a website and cannot justify paying professionals.</li>
+<li>If you do not foresee any major changes or additional features in the future and are prepared to pay the premiums for these.</li>
+<li>If the restrictions created by using a CMS will not affect your online presence in a dramatic way.</li>
+</ul>
+
+
+<p>One more thing. There is one scenario where CMS’s are essential: large groups of individuals managing many different parts of a website. If more than just a few people will be managing a website, it is often impossible to perform updates without problems. The access restrictions and conflict management systems employed by some CMS’s can address these issues.</p>
+
+<blockquote><p>Imagine trying to use a gingerbread man cookie cutter and a reindeer cookie cutter to create centaur-shaped cookies. This not what these tools were meant for, and you will have a difficult time stitching together the pieces. While CMS’s often make valiant efforts to allow freedom such as this, they are never ideal and frequently make tradeoffs to accommodate this flexibility.</p></blockquote>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/seo/seo-flash-accessibility/">A Solution for SEO, Flash, and Accessibility</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2008-04-02T00:00:00-05:00" pubdate data-updated="true">Apr 2<span>nd</span>, 2008</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This document outlines how to produce a website that uses one Flash video as its primary content, but does not sacrifice search engine visibility by doing so. During my time as a software developer in Dallas, TX, I’ve spent a lot of time trying to get Flash sites to play nicely with search engines.</p>
+
+<p>One of the prevailing ways of doing this uses SWFObject, as demonstrated by Jonathan Hochman in “How to SEO Flash” [<a href="#ref1">1</a>]. Using SWFObject adds an additional requirement to the user experience. To experience the site as it is intended, a user’s browser must support Javascript in addition to Flash. This approaches the gray area in the context of web standards. To address this problem, Drew McLellan came up with a method he calls the “Satay Method” [<a href="#ref2">2</a>]. The Satay Method seems to be as close as you can get to supporting rich user-experiences, search engine optimization, and standards compliance all at the same time.</p>
+
+<p>However, there is one additional problem that needs to be addressed. I’ve simply pointed out a common approach. When a user visits a website for the first time, they will be viewing a landing page. A landing page is not necessarily the homepage. Many search engine results point directly to internal pages on a particular domain. To address this problem, a routing script should be placed inside of the primary flash video. This script will start playback at a particular spot depending on which webpage is being viewed.</p>
+
+<h3>Site structure requirements</h3>
+
+<ul>
+<li><ul>
+<li>*Pages should be structured the same as HTML-only sites. Each page should contain HTML links to other pages, as well as unique HTML content.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>HTML requirements</h3>
+
+<ul>
+<li><ul>
+<li>*Each page should provide both HTML and Flash. HTML should be visible, unless the user’s browser supports an adequate version of Flash. If the browser does not support the correct version of Flash, the website should this to the browser. As long as the browser is aware of an outdated version of Flash, it can ask the user to upgrade to a newer version. Because the primary Flash object will not indicate which version of Flash it uses (for standards purposes), an additional (dummy) Flash video should be included that specifies the version used by the primary Flash video. If this is confusing, see the example.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Flash requirements</h3>
+
+<ul>
+<li><ul>
+<li>*The primary movie should be small enough to load immediately without buffering. If it is not small enough, IE may decide to wait for the whole movie to load before starting playback. If the flash video is too big to be loaded immediately, it should be replaced by a separate, smaller Flash object that will load the larger movie immediately. I’ll call this a proxy object.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>Because users may enter the site from places other than the homepage (ie. search engine results linking directly to a specific page), the Flash video should also be able to begin playback on the correct “page” depending on which HTML page was loaded. Use HTTP query parameters and a routing script on the first frame of the root level of the Flash video for this. If a proxy flash object is used, certain query parameters may need to be forwarded to the primary flash video for routing to be performed correctly.</p>
+
+<p>Each semantic section of the flash video should have a corresponding directory on the web server. Each semantic page of the Flash video should have a corresponding HTML page on the webserver — in the correct directory.</p>
+
+<h3>Javascript requirements</h3>
+
+<ul>
+<li><ul>
+<li>*There should be none. Behavior should only be added to a webpage if it adds value to the user experience. Content should only be added using Javascript if it is insignificant or unrelated to the rest of the content on the page.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<h3>Limitations and concerns</h3>
+
+<ul>
+<li><ul>
+<li>*Recent versions of IE will require users to click on the Flash video before playback will begin. You could follow the method outlined here and also include Javascript to load the Flash object after the page has loaded. I have not personally tested this, but it seems like it should work.</p></li>
+</ul>
+</li>
+</ul>
+
+
+<p>I do not have access to recent versions of the JAWS screen reader. The Satay method of including Flash objects has been known not to work in older versions of JAWS.</p>
+
+<h3>Examples</h3>
+
+<hr />
+
+<h4>Sitemap:</h4>
+
+<pre>/ [Document Root]
+     index.html
+     /features
+        index.html
+     /art
+        index.html
+        /history
+           index.html
+     /contacts
+        index.html</pre>
+
+
+<h4>HTML:</h4>
+
+<pre>&lt;html&gt;
+      &lt;head&gt;
+         &lt;title&gt;SEO Title&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+         &lt;!-- Dummy object for version detection --&gt;
+         &lt;object type="application/x-shockwave-flash"
+               codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"
+               style="display: none; visibility: hidden;"&gt;
+            &lt;param name="movie" value="dummy.swf" /&gt;
+         &lt;/object&gt;
+
+         &lt;!-- Actual video --&gt;
+         &lt;object type="application/x-shockwave-flash" data="flash.swf?page=home" width="400" height="300"&gt;
+            &lt;param name="movie" value="flash.swf?page=home" /&gt;
+            &lt;div&gt;
+               Copy . . .
+            &lt;/div&gt;
+         &lt;/object&gt;
+      &lt;/body&gt;
+   &lt;/html&gt;</pre>
+
+
+<h4>Actionscript:</h4>
+
+<pre>// If this code is placed in a proxy flash object, load that movie and
+  // forward the request
+
+  // Maps page names to frame numbers
+  var lookup:Object = new Object();
+  lookup.home = 6;
+  lookup.features = 128;
+  lookup.art = 394;
+  lookup.history = 228;
+  lookup.contacts = 578;
+
+  // `page` is passed in from the HTTP GET parameter
+  gotoAndStop( lookup[ page ] );</pre>
+
+
+<hr />
+
+<p><strong>Sources:</strong></p>
+
+<ol>
+<li><a name="ref1"></a> – Jonathan Hochman – “How to SEO Flash”</li>
+<li><a name="ref2"></a> – Drew McLellan – “Flash Satay: Embedding Flash While Supporting Standards”</li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/2/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/hacking/ubuntu-12-boot-process-explained/">Ubuntu 12 boot process explained</a>
+      </li>
+    
+      <li class="post">
+        <a href="/advice/effective-graph-layout/">Effective Graph Layout</a>
+      </li>
+    
+      <li class="post">
+        <a href="/programming/better-logging-with-loggly-and-symfony-2/">Better logging with Loggly and Symfony 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/advice/dell-design-library/">DELL Design Library</a>
+      </li>
+    
+      <li class="post">
+        <a href="/mobile/how-to-root-a-kindle-fire-on-os-x/">How to root a Kindle Fire on OS X</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/johntron">@johntron</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'johntron',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("johntron", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/johntron" class="twitter-follow-button" data-show-count="false">Follow @johntron</a>
+  
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/johntron?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - John Syrinek -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
